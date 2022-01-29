@@ -31,15 +31,12 @@ public class CharAniManager : MonoBehaviour
         animator = Character.GetComponent<Animator>();
 
         Character.GetComponent<Animator>();
+        Camera();
     }
 
     private void Update()
     {
-        CharMovement();
-        if (animator.runtimeAnimatorController == idle)
-        {
-            Camera();
-        }
+        
     }
 
     public void CharMovement()
@@ -62,7 +59,7 @@ public class CharAniManager : MonoBehaviour
 
         Vector3 MCPosEnd = new Vector3(Character.transform.position.x, 2, Character.transform.position.z);
 
-        MCPos = Vector3.Lerp(MCPos, MCPosEnd, charspeed * Time.deltaTime);
+        MCam.transform.position = Vector3.Lerp(MCPos, MCPosEnd, charspeed * Time.deltaTime);
         
         MCam.transform.LookAt(Area.transform.position);
     }

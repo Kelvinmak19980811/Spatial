@@ -6,16 +6,18 @@ public class CameraMove : MonoBehaviour
 {
     public GameObject MainCamera;
     public GameObject Target;
+    public GameObject Area;
     // Start is called before the first frame update
     void Start()
     {
-
+        Target.transform.LookAt(Area.transform.position);
+        Camera();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Camera();
+        
     }
 
     void Camera()
@@ -27,6 +29,6 @@ public class CameraMove : MonoBehaviour
 
         MainCamera.transform.position = Vector3.Lerp(MCPos, MCPosEnd, 1 * Time.deltaTime);
 
-        MainCamera.transform.LookAt(Target.transform.position);
+        MainCamera.transform.LookAt(Area.transform.position);
     }
 }

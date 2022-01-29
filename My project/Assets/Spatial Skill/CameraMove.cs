@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class CameraMove : MonoBehaviour
 {
@@ -11,16 +12,15 @@ public class CameraMove : MonoBehaviour
     void Start()
     {
         Target.transform.LookAt(Area.transform.position);
-        Camera();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        Camera();
     }
 
-    void Camera()
+    public void Camera()
     {
         Debug.Log("Camera");
         Vector3 MCPos = MainCamera.transform.position;
@@ -29,6 +29,10 @@ public class CameraMove : MonoBehaviour
 
         MainCamera.transform.position = Vector3.Lerp(MCPos, MCPosEnd, 1 * Time.deltaTime);
 
-        MainCamera.transform.LookAt(Area.transform.position);
+        Transform AreaRotate = Area.transform;
+
+        MainCamera.transform.rotation = Quaternion.Lerp(MainCamera.transform.rotation, Quaternion.LookRotation(Area.transform.position), 1 * Time.deltaTime);   
     }
+
+    
 }

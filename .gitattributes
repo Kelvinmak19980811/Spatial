@@ -1,1 +1,11 @@
 file filter=lfs diff=lfs merge=lfs -text
+EDS_Scene.unity
+Cinemachine_Test.unity
+ESS_Scene.unity
+IDS_Scene.unity
+ISS_Scene.unity
+ISS_Scene_BackUp.unity
+New Scene 1.unity
+New Scene.unity
+VOC_Scene.unity
+My[[:space:]]Project filter=lfs diff=lfs merge=lfs -text

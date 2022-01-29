@@ -1,0 +1,9 @@
+{
+    "health": 100.0,
+    "money": 250,
+    "equip": [
+        "sword",
+        "shield"
+    ],
+    "ChildObjectTransforms": []
+}

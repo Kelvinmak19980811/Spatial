@@ -8,4 +8,7 @@ ISS_Scene_BackUp.unity
 New Scene 1.unity
 New Scene.unity
 VOC_Scene.unity
+Story_Intrinsic_Dynamic_Scene.unity
+Testing.unity
 My[[:space:]]Project filter=lfs diff=lfs merge=lfs -text
+*.unity filter=lfs diff=lfs merge=lfs -text

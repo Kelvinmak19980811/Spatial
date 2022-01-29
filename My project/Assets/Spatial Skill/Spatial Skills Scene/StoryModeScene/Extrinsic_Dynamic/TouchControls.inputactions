@@ -1,0 +1,33 @@
+{
+    "name": "TouchControls",
+    "maps": [
+        {
+            "name": "TouchInput",
+            "id": "c38c3a1b-c73e-4d34-8ee2-b9b261a15187",
+            "actions": [
+                {
+                    "name": "Touch",
+                    "type": "PassThrough",
+                    "id": "9a1724df-bebe-4b31-81c0-0a8a7e7faa8c",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "246f4e06-ee0e-4163-b827-63811b60beae",
+                    "path": "<Touchscreen>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Touch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

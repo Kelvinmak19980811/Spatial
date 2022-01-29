@@ -23,10 +23,9 @@ public class RandomSpawnManager : MonoBehaviour
     [SerializeField]
     private LayerMask CameraMask;
 
-    public int SpawnIndex;
+    private int SpawnIndex = 4;
 
-    [SerializeField]
-    float CameraHeight;
+    private float CameraHeight = 80.0f;
 
     public void RandSpawn()
     {
@@ -44,14 +43,16 @@ public class RandomSpawnManager : MonoBehaviour
 
         Area = SpawnObjDetail(("Area"), ("Spawned Area"), 10);
 
-        Area.transform.position = RandPos;
+        Vector3 AreaPos = Area.transform.position;
+
+        AreaPos = RandPos;
         Area.transform.localScale = AreaSize;
         Area.transform.rotation = Quaternion.identity;
-        Area.AddComponent<MeshRenderer>().enabled = false;
-        Area.AddComponent<Collider>().isTrigger = true;
 
-        MainCamera.transform.position = new Vector3(Area.transform.position.x, CameraHeight, Area.transform.position.z);
-        MainCamera.transform.LookAt(Area.transform.position);
+        Camera MCam = MainCamera.GetComponent<Camera>();
+
+        MCam.transform.position = new Vector3(AreaPos.x, CameraHeight, AreaPos.z);
+        MCam.transform.LookAt(Area.transform.position);
     }
 
     public void DestroyObj(string ObjectTag)
@@ -104,8 +105,10 @@ public class RandomSpawnManager : MonoBehaviour
 
             CharCam = SpawnObjDetail(("Charater_" + i + "_Camera"), ("Character"), 10);
 
-            CharCam.GetComponent<Camera>().cullingMask = CameraMask;
-            CharCam.GetComponent<Camera>().GetComponent<AudioListener>().enabled = false;
+            Camera Cam = CharCam.GetComponent<Camera>();
+
+            Cam.cullingMask = CameraMask;
+            CharCam.GetComponent<AudioListener>().enabled = false;
 
         }
     }
@@ -133,7 +136,7 @@ public class RandomSpawnManager : MonoBehaviour
         }
     }
 
-    private GameObject SpawnObjDetail(string objtag, string objname, int objlayer)
+    public GameObject SpawnObjDetail(string objtag, string objname, int objlayer)
     {
         GameObject obj = new GameObject();
         

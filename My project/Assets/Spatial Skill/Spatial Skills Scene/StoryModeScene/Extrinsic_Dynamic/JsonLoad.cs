@@ -13,7 +13,6 @@ public class JsonLoad : MonoBehaviour
     SpawnAreaData SpawnData;
     void Start()
     {
-
         LoadData = File.ReadAllText("C:/Users/qefml/Desktop/My project/Assets");
 
         MyData = JsonUtility.FromJson<CharData>(LoadData);
@@ -24,6 +23,5 @@ public class JsonLoad : MonoBehaviour
         Debug.Log("Current Question is " + MyData.question);
         Debug.Log("Current Question Complicated is " + MyData.questioncomplicated);
         Debug.Log("Question have " + MyData.questionchoice + "choice");
-
     }
 }

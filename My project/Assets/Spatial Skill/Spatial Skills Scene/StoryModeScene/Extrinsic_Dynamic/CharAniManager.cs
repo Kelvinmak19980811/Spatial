@@ -8,29 +8,27 @@ public class CharAniManager : MonoBehaviour
     public GameObject Area;
     private GameObject Character;
     protected Vector3 CharPos;
-    private float charspeed = 0.1f;
+    protected float charspeed = 0.1f;
     protected static Animator animator;
     [SerializeField] protected RuntimeAnimatorController idle;
     [SerializeField] protected RuntimeAnimatorController running;
 
     public GameObject Target;
-    public Vector3 CharPosition = new Vector3(100, 1 , 100);
+    //protected Vector3 CharPosition = new Vector3(100, 1 , 100);
 
     public GameObject MainCamera;
 
-    public GameObject MCam;
+    [SerializeField] protected LayerMask _CullingLayer;
 
-    public LayerMask _CullingLayer;
-
-    private Vector3 SpawnCharPos;
+    protected Vector3 SpawnCharPos;
     // Start is called before the first frame update
     void Start()
     {
         float RandX, RandZ;
-        RandX = Area.transform.position.x + Random.Range(Area.transform.localScale.x / 2, -Area.transform.localScale.x / 2);
-        RandZ = Area.transform.position.z + Random.Range(Area.transform.localScale.z / 2, -Area.transform.localScale.z / 2);
+        RandX = Area.transform.position.x + Random.Range(Area.transform.localScale.x, -Area.transform.localScale.x);
+        RandZ = Area.transform.position.z + Random.Range(Area.transform.localScale.z, -Area.transform.localScale.z);
         SpawnCharPos = new Vector3(RandX, 1, RandZ);
-        Character = Instantiate(Char[Random.Range(0, Char.Length)], CharPosition, Quaternion.identity);
+        Character = Instantiate(Char[Random.Range(0, Char.Length)], SpawnCharPos, Quaternion.identity);
         Character.transform.localScale = new Vector3 (2, 2, 2);
         Character.layer = 10;
         foreach (Transform T in Character.transform) //set character child object tag and layer

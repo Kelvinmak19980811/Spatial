@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharAniManager : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class CharAniManager : MonoBehaviour
     private GameObject Character;
     protected Vector3 CharPos;
     protected float charspeed = 0.1f;
-    protected static Animator animator;
+    protected Animator animator;
     [SerializeField] protected RuntimeAnimatorController idle;
     [SerializeField] protected RuntimeAnimatorController running;
 
@@ -21,68 +22,82 @@ public class CharAniManager : MonoBehaviour
     [SerializeField] protected LayerMask _CullingLayer;
 
     protected Vector3 SpawnCharPos;
+
+    protected bool _char = true;
+    protected bool _cam = true;
+
+    public Button _Button;
+    EDS_QM _QuizManager;
     // Start is called before the first frame update
     void Start()
     {
+        Char = _QuizManager.options;
         CharacterSpawn();
-        //StartCoroutine(CharMovement());
+        Button btn = _Button.GetComponent<Button>();
+
     }
 
     private void Update()
     {
-
+        if (_char == false)
+        {
+            CharMovement();
+        }
+        if(_cam == false)
+        {
+            CameraMove();
+        }
     }
 
-    private IEnumerator CameraMove()
+    void CameraMove()
     {
         Debug.Log("Camera");
         Vector3 MCPos = MainCamera.transform.position;
 
         Vector3 MCPosEnd = new Vector3(CharPos.x, 2, CharPos.z);
 
-        for(float t = 0.01f; t< 1; t++)
-        {
-            MainCamera.transform.position = Vector3.Lerp(MCPos, MCPosEnd, 1 * Time.deltaTime);
-        }
+        MainCamera.transform.position = Vector3.Lerp(MCPos, MCPosEnd, 1 * Time.deltaTime);
 
-        for(float t2 = 0.01f; t2 < 0.5; t2++)
-        {
-            MainCamera.transform.rotation = Quaternion.Lerp(MainCamera.transform.rotation, Quaternion.LookRotation(Target.transform.position), 0.5f * Time.deltaTime);
-        }
+        MainCamera.transform.rotation = Quaternion.Lerp(MainCamera.transform.rotation, Quaternion.LookRotation(Target.transform.position), 0.5f * Time.deltaTime);
 
         if (Vector3.Distance(MainCamera.transform.position, MCPosEnd) < 1f)
         {
             MainCamera.GetComponent<Camera>().cullingMask = _CullingLayer;
-            yield return null;
-        }
-    }
-    private IEnumerator CharMovement()
-    {
-        for(float t = 0.01f; t< charspeed; t++)
-        {
-            animator.runtimeAnimatorController = running;
-
-            Character.transform.position = Vector3.Lerp(CharPos, Area.transform.position, charspeed * Time.deltaTime);
-
-            if (Vector3.Distance(CharPos, Area.transform.position) < 1f)
+            if(Vector3.Distance(MainCamera.transform.position, MCPosEnd) < 0.005f)
             {
-                Debug.Log("Arrive");
-                animator.runtimeAnimatorController = idle;
-                for (float t2 = 0.01f; t2 < 1; t2++)
-                {
-                    Character.transform.rotation = Quaternion.Lerp(Character.transform.rotation, Quaternion.LookRotation(Target.transform.position), 1 * Time.deltaTime);
-                }
-                yield return null;
+                _cam = true;
             }
         }
-        StartCoroutine(CameraMove());
+    }
+    void CharMovement()
+    {
+
+        CharPos = new Vector3(Character.transform.position.x, 1, Character.transform.position.z);
+
+        animator.runtimeAnimatorController = running;
+
+        Character.transform.position = Vector3.Lerp(CharPos, Area.transform.position, charspeed * Time.deltaTime);
+
+        if (Vector3.Distance(CharPos, Area.transform.position) < 1f)
+        {
+            Debug.Log("Arrive");
+            animator.runtimeAnimatorController = idle;
+            Character.transform.rotation = Quaternion.Lerp(Character.transform.rotation, Quaternion.LookRotation(Target.transform.position), 1 * Time.deltaTime);
+
+            float forwardangle = Vector3.Angle(Character.transform.forward, Target.transform.position);
+            Debug.Log(forwardangle);
+            if (forwardangle < 1f)
+            {
+                _cam = false;
+                _char = true;
+            }
+        }
     }
 
     void CharacterSpawn()
     {
         CharacterSetting();
 
-        CharPos = new Vector3(Character.transform.position.x, 1, Character.transform.position.z);
 
     }
     void CharacterSetting()
@@ -101,5 +116,10 @@ public class CharAniManager : MonoBehaviour
         }
         Character.transform.LookAt(Area.transform.position);
         animator = Character.GetComponent<Animator>();
+    }
+
+    public void Test()
+    {
+        _char = false;
     }
 }

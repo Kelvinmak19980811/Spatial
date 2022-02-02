@@ -12,13 +12,14 @@ public class EDS_QM : MonoBehaviour
 
     public Image QuestionImage;
     public GameObject QuestionGmObj;
-    public Text ScoreTxt;
     public GameObject Life;
-    public GameObject LifeEmpty;
 
     int totalLife = 1;
     int totalQuestions = 0;
     public int CorrectCount;
+    public Text CorrectText;
+    public int WrongCount;
+    public Text WrongText;
 
     public Image LikeBar;
     public float CurrentHealth;
@@ -27,73 +28,82 @@ public class EDS_QM : MonoBehaviour
     public int score;
 
     public GameObject Quizpanel;
-    public GameObject GoPanel;
-    public GameObject GwPanel;
+    public GameObject ResultPanel;
+
+    public Text ResultScore;
+
+    public GameObject Star1, Star2, Star3, StarOff1, StarOff2, StarOff3;
+
 
     private void Start()
     {
         CorrectCount = 0;
 
-        ScoreTxt.text = "Question Remaining : " + CorrectCount + "/" + score;
-
         totalQuestions = QnA.Count;
 
         Life.SetActive(true);
-        LifeEmpty.SetActive(false);
-        GoPanel.SetActive(false);
-        GwPanel.SetActive(false);
+        ResultPanel.SetActive(false);
 
         generateQuestion();
+
+        StarOff1.SetActive(true);
+        StarOff2.SetActive(true);
+        StarOff3.SetActive(true);
+
+        Star1.SetActive(false);
+        Star2.SetActive(false);
+        Star3.SetActive(false);
     }
 
     private void Update()
     {
         CurrentHealth = CorrectCount;
         LikeBar.fillAmount = (CurrentHealth * 20) / MaxHealth;
+        ResultScore = CorrectText;
+
+        if (CorrectCount <= 1000)
+        {
+            OneStar();
+        }
+        else if (CorrectCount == 2000)
+        {
+            TwoStar();
+        }
+        else if (CorrectCount == 3000)
+        {
+            ThreeStar();
+        }
+        else if (CorrectCount >= 4000)
+        {
+            NoStar();
+        }
     }
 
-    public void GameOver()
+    public void Result()
     {
         Quizpanel.SetActive(false);
-        GoPanel.SetActive(true);
-    }
-
-    public void GameWin()
-    {
-        Quizpanel.SetActive(false);
-        GwPanel.SetActive(true);
+        ResultPanel.SetActive(true);
     }
 
     public void correct()
     {
         //when you are right
-        CorrectCount += 1;
+        CorrectCount += 1000;
+        CorrectText.text = CorrectCount.ToString();
         QnA.RemoveAt(currentQuestion);
         QuestionGmObj.SetActive(false);
 
         generateQuestion();
-
-        ScoreTxt.text = "Question Remaining : " + CorrectCount + "/" + totalQuestions;
-
-        if (CorrectCount == score)
-        {
-        GameWin();
-        }
     }
 
     public void wrong()
     {
         //when you answer wrong
-
+        CorrectCount += 1000;
+        WrongText.text = WrongCount.ToString();
         QnA.RemoveAt(currentQuestion);
         QuestionGmObj.SetActive(false);
         generateQuestion();
-
-        ScoreTxt.text = "Question Remaining : " + CorrectCount + "/" + totalQuestions;
-
-        LifeCount();
-
-        
     }
 
 
@@ -104,9 +114,6 @@ public class EDS_QM : MonoBehaviour
             options[i].GetComponent<Image>().color = options[i].GetComponent<EDS_AnswerScript>().startColor;
             options[i].GetComponent<EDS_AnswerScript>().isCorrect = false;
             options[i].transform.GetChild(0).GetComponent<Image>().sprite = QnA[currentQuestion].Answers[i];
-            
-            
-            
 
             if (QnA[currentQuestion].CorrectAnswers == i+1)
             {
@@ -130,35 +137,52 @@ public class EDS_QM : MonoBehaviour
         else
         {
             Debug.Log("Out of Question");
-            GameOver();
+            Result();
         }
-
     }
 
-    void LifeCount()
+    void OneStar()
     {
-            if (CorrectCount == 0)
-            {
-                GameOver();
-                Debug.Log("You Lose");
-            }
-            else if (CorrectCount > 0 && totalLife == 1)
-            {
-            totalLife = 0;
-                CorrectCount = 0;
-                Life.SetActive(false);
-                LifeEmpty.SetActive(true);
+        Star1.SetActive(true);
+        StarOff2.SetActive(true);
+        StarOff3.SetActive(true);
 
-            ScoreTxt.text = "Question Remaining : " + CorrectCount + "/" + score;
-                Debug.Log("Life is 0");
-
-            }
-            else if (totalLife == 0)
-            {
-            GameOver();
-            Debug.Log("Life 0 and lose");
-            }
+        StarOff1.SetActive(false);
+        Star2.SetActive(false);
+        Star3.SetActive(false);
     }
 
+    void TwoStar()
+    {
+        Star1.SetActive(true);
+        Star2.SetActive(true);
+        StarOff3.SetActive(true);
+
+        StarOff1.SetActive(false);
+        StarOff2.SetActive(false);
+        Star3.SetActive(false);
+    }
+
+    void ThreeStar()
+    {
+        Star1.SetActive(true);
+        Star2.SetActive(true);
+        Star3.SetActive(true);
+
+        StarOff1.SetActive(false);
+        StarOff2.SetActive(false);
+        StarOff3.SetActive(false);
+    }
+
+    void NoStar()
+    {
+        StarOff1.SetActive(true);
+        StarOff2.SetActive(true);
+        StarOff3.SetActive(true);
+
+        Star1.SetActive(false);
+        Star2.SetActive(false);
+        Star3.SetActive(false);
+    }
 }
 

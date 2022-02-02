@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class EDS_GameManager : MonoBehaviour
@@ -19,8 +20,12 @@ public class EDS_GameManager : MonoBehaviour
     public GameObject LikeBarBtnOn;
     public GameObject LikeBarBtnOff;
 
+    public GameObject PauseMenu;
+
+    public GameObject ResultMenu;
+
     public float timeValue;
-    public Image Clock;
+    public Text Clock;
     public float CurrentTime;
     public float MaxTime;
 
@@ -42,6 +47,9 @@ public class EDS_GameManager : MonoBehaviour
         LikeBarBtnOn.SetActive(false);
         LikeBarBtnOff.SetActive(true);
 
+        PauseMenu.SetActive(false);
+        ResultMenu.SetActive(false);
+
         MaxTime = timeValue;
     }
 
@@ -50,16 +58,16 @@ public class EDS_GameManager : MonoBehaviour
     {
         if (timeValue > 0)
         {
-            timeValue -= Time.deltaTime;
+            timeValue -= (int)Time.deltaTime;
             CurrentTime = timeValue;
-            Clock.fillAmount = CurrentTime / MaxTime;
+            Clock.text = timeValue.ToString();
         }
 
 
         if (timeValue == 0)
         {
             EDS_QM Time = new EDS_QM();
-            Time.GameOver();
+            Time.Result();
         }
     }
 
@@ -105,9 +113,31 @@ public class EDS_GameManager : MonoBehaviour
         ChoiceBtnOff.SetActive(false);
     }
 
-    public void PauseMenuController()
+    public void Pause()
     {
+        PauseMenu.SetActive(true);
+        Time.timeScale = 0;
+    }
 
+    public void Resume()
+    {
+        PauseMenu.SetActive(false);
+        Time.timeScale = 1;
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene("Kato");
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit(); 
+    }
+
+    public void Result()
+    {
+        ResultMenu.SetActive(true);
     }
 
     

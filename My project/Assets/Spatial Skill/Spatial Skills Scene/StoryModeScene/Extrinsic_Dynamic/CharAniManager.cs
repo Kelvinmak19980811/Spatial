@@ -24,31 +24,67 @@ public class CharAniManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CharacterSetting();
+        CharacterSpawn();
+        //StartCoroutine(CharMovement());
     }
 
     private void Update()
     {
-        CharMovement();
+
     }
 
-    void CameraMove()
+    private IEnumerator CameraMove()
     {
         Debug.Log("Camera");
         Vector3 MCPos = MainCamera.transform.position;
 
         Vector3 MCPosEnd = new Vector3(CharPos.x, 2, CharPos.z);
 
-        MainCamera.transform.position = Vector3.Lerp(MCPos, MCPosEnd, 1 * Time.deltaTime);
+        for(float t = 0.01f; t< 1; t++)
+        {
+            MainCamera.transform.position = Vector3.Lerp(MCPos, MCPosEnd, 1 * Time.deltaTime);
+        }
 
-        MainCamera.transform.rotation = Quaternion.Lerp(MainCamera.transform.rotation, Quaternion.LookRotation(Target.transform.position), 0.5f * Time.deltaTime);
+        for(float t2 = 0.01f; t2 < 0.5; t2++)
+        {
+            MainCamera.transform.rotation = Quaternion.Lerp(MainCamera.transform.rotation, Quaternion.LookRotation(Target.transform.position), 0.5f * Time.deltaTime);
+        }
 
         if (Vector3.Distance(MainCamera.transform.position, MCPosEnd) < 1f)
         {
             MainCamera.GetComponent<Camera>().cullingMask = _CullingLayer;
+            yield return null;
         }
     }
+    private IEnumerator CharMovement()
+    {
+        for(float t = 0.01f; t< charspeed; t++)
+        {
+            animator.runtimeAnimatorController = running;
 
+            Character.transform.position = Vector3.Lerp(CharPos, Area.transform.position, charspeed * Time.deltaTime);
+
+            if (Vector3.Distance(CharPos, Area.transform.position) < 1f)
+            {
+                Debug.Log("Arrive");
+                animator.runtimeAnimatorController = idle;
+                for (float t2 = 0.01f; t2 < 1; t2++)
+                {
+                    Character.transform.rotation = Quaternion.Lerp(Character.transform.rotation, Quaternion.LookRotation(Target.transform.position), 1 * Time.deltaTime);
+                }
+                yield return null;
+            }
+        }
+        StartCoroutine(CameraMove());
+    }
+
+    void CharacterSpawn()
+    {
+        CharacterSetting();
+
+        CharPos = new Vector3(Character.transform.position.x, 1, Character.transform.position.z);
+
+    }
     void CharacterSetting()
     {
         float RandX, RandZ;
@@ -65,21 +101,5 @@ public class CharAniManager : MonoBehaviour
         }
         Character.transform.LookAt(Area.transform.position);
         animator = Character.GetComponent<Animator>();
-    }
-
-    private IEnumerator CharMovement()
-    {
-        CharPos = new Vector3(Character.transform.position.x, 1, Character.transform.position.z);
-        animator.runtimeAnimatorController = running;
-        Character.transform.position = Vector3.Lerp(CharPos, Area.transform.position, charspeed * Time.deltaTime);
-
-        if (Vector3.Distance(CharPos, Area.transform.position) < 1f)
-        {
-            Debug.Log("Arrive");
-            animator.runtimeAnimatorController = idle;
-            Character.transform.rotation = Quaternion.Lerp(Character.transform.rotation, Quaternion.LookRotation(Target.transform.position), 1 * Time.deltaTime);
-            CameraMove();
-        }
-        yield return null;
     }
 }

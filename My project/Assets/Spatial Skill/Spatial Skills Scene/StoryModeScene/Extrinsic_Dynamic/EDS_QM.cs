@@ -23,7 +23,7 @@ public class EDS_QM : MonoBehaviour
 
     public Image LikeBar;
     public float CurrentHealth;
-    private float MaxHealth = 100f;
+    private float MaxHealth = 5f;
 
     public int score;
 
@@ -57,25 +57,25 @@ public class EDS_QM : MonoBehaviour
 
     private void Update()
     {
-        CurrentHealth = CorrectCount;
-        LikeBar.fillAmount = (CurrentHealth * 20) / MaxHealth;
+        CurrentHealth = CorrectCount/1000;
+        LikeBar.fillAmount = (CurrentHealth) / MaxHealth;
         ResultScore = CorrectText;
 
-        if (CorrectCount <= 1000)
+        if (CorrectCount == 0)
         {
-            OneStar();
+             NoStar();
         }
-        else if (CorrectCount == 2000)
+        else if (CorrectCount <= 2000)
         {
-            TwoStar();
+            OneStar(); 
         }
         else if (CorrectCount == 3000)
         {
-            ThreeStar();
+            TwoStar();
         }
         else if (CorrectCount >= 4000)
         {
-            NoStar();
+            ThreeStar();
         }
     }
 
@@ -83,6 +83,7 @@ public class EDS_QM : MonoBehaviour
     {
         Quizpanel.SetActive(false);
         ResultPanel.SetActive(true);
+        Time.timeScale = 0;
     }
 
     public void correct()
@@ -99,7 +100,7 @@ public class EDS_QM : MonoBehaviour
     public void wrong()
     {
         //when you answer wrong
-        CorrectCount += 1000;
+        WrongCount += 1000;
         WrongText.text = WrongCount.ToString();
         QnA.RemoveAt(currentQuestion);
         QuestionGmObj.SetActive(false);

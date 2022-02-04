@@ -49,7 +49,7 @@ LODGroup:
   - screenRelativeHeight: 0.018013576
     fadeTransitionWidth: 0
     renderers: []
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!1 &1202212167955428
 GameObject:
   m_ObjectHideFlags: 0

@@ -160,7 +160,7 @@ LODGroup:
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 3726658906748487222}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!1 &450480894620210119
 GameObject:
   m_ObjectHideFlags: 0

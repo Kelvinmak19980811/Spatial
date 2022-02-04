@@ -59,8 +59,8 @@ public class EDS_GameManager : MonoBehaviour
         if (timeValue > 0)
         {
             timeValue -= Time.deltaTime;
-            CurrentTime = timeValue;
-            Clock.text = timeValue.ToString();
+            CurrentTime = (int)timeValue;
+            Clock.text = CurrentTime.ToString();
         }
 
 

@@ -30,8 +30,7 @@ public class CharAniManager : MonoBehaviour
     public Button _Button;
     EDS_QM _QuizManager;
 
-    public GameObject Pic;
-    public GameObject PicTarget;
+    public GameObject PicAnimation;
 
     public bool Answer;
     // Start is called before the first frame update
@@ -109,6 +108,8 @@ public class CharAniManager : MonoBehaviour
     }
     void CharacterSpawn()
     {
+        RandomSpawnManager destroy = new RandomSpawnManager();
+        destroy.DestroyObj("Character");
         CharacterSetting();
     }
     void CharacterSetting()
@@ -136,54 +137,12 @@ public class CharAniManager : MonoBehaviour
 
     public void PicScaleCorrect()
     {
-        RectTransform PicTran = Pic.GetComponent<RectTransform>();
-        Vector3 PicStartSize = new Vector3(PicTran.localScale.x, PicTran.localScale.y, PicTran.localScale.z);
-        Vector3 PicEndSize = new Vector3(2, 2, PicTran.localScale.z);
-
-        Vector3 PicStartPos = PicTran.transform.position;
-        Vector3 PicEndPos = PicTarget.GetComponent<RectTransform>().transform.position;
-
-
-        Pic.transform.position = Vector3.Lerp(PicStartPos, PicEndPos, 1 * Time.deltaTime);
-
-        Color PicColor = Pic.GetComponent<Image>().color;
-
-
-        if (Vector3.Distance(Pic.transform.position, PicEndPos) < 1f)
-        {
-            Debug.Log("Correct");
-            PicTran.localScale = Vector2.Lerp(PicStartSize, PicEndSize, 1 * Time.deltaTime);
-        }
-
-        if (Vector2.Distance(PicStartSize, PicEndSize) < 1f)
-        {
-            _scale = true;
-        }
+        Animator PicAni = PicAnimation.GetComponent<Animator>();
+        PicAni.enabled = true;
     }
     public void PicScaleWrong()
     {
-        RectTransform PicTran = Pic.GetComponent<RectTransform>();
-        Vector3 PicStartSize = new Vector3(PicTran.localScale.x, PicTran.localScale.y, PicTran.localScale.z);
-        Vector3 PicEndSize = new Vector3(2, 2, PicTran.localScale.z);
-
-        Vector3 PicStartPos = PicTran.transform.position;
-        Vector3 PicEndPos = PicTarget.GetComponent<RectTransform>().transform.position;
-
-
-        Pic.transform.position = Vector3.Lerp(PicStartPos, PicEndPos, 1 * Time.deltaTime);
-
-        Color PicColor = Pic.GetComponent<Image>().color;
-        
-
-        if (Vector3.Distance(Pic.transform.position, PicEndPos) < 1f)
-        {
-            Debug.Log("Wrong");
-            PicTran.localScale = Vector2.Lerp(PicStartSize, PicEndSize, 1 * Time.deltaTime);
-        }
-
-        if (Vector2.Distance(PicStartSize, PicEndSize) < 1f)
-        {
-            _scale = true;
-        }
+        Animator PicAni = PicAnimation.GetComponent<Animator>();
+        PicAni.enabled = true;
     }
 }
